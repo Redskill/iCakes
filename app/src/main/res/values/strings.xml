@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">iCakes</string>
+    <string name="todo">TODO</string>
+    <string name="Refreshing...">Refreshing</string>
+    <string name="Cancel">Cancel</string>
+    <string name="OK">OK</string>
+    <string name="Download_failed">Failed</string>
+    <string name="error">List cannot be loaded</string>
+    <string name="Retry">Would you like to retry the download?</string>
 </resources>

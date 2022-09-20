@@ -1,7 +1,6 @@
 package com.redskill.icakes
 
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,14 +17,18 @@ class CakesViewModel constructor(private val cakesRepository: CakesRepository) :
 
     fun getAllCakes() {
         viewModelScope.launch {
-            val response = cakesRepository.getAllCakes()
-            withContext(Dispatchers.Main) {
-                if (response.isSuccessful) {
-                    cakesList.postValue(response.body() as List<Cake>)
-                } else {
-                    viewModelScope.cancel()
-                    Log.e("CAKES", "Failed to load cakes list")
+            try {
+                val response = cakesRepository.getAllCakes()
+                withContext(Dispatchers.Main) {
+                    if (response.isSuccessful) {
+                        cakesList.postValue(response.body() as List<Cake>)
+                    } else {
+                        viewModelScope.cancel()
+                        Log.e("CAKES", "Failed to load cakes list")
+                    }
                 }
+            } catch (e: Exception) {
+                viewModelScope.cancel()
             }
         }
     }
