@@ -12,7 +12,7 @@ class CakesActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCakesBinding
     private val retrofitService = RetrofitService.getInstance()
-    private val cakesAdapter : CakesAdapter by lazy { CakesAdapter() }
+    private val cakesAdapter: CakesAdapter by lazy { CakesAdapter() }
     private val cakesRepository = CakesRepository(retrofitService)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,7 +20,10 @@ class CakesActivity : AppCompatActivity() {
         binding = ActivityCakesBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val viewModel = ViewModelProvider(this, CakesViewModelFactory(cakesRepository))[CakesViewModel::class.java]
+        val viewModel = ViewModelProvider(
+            this,
+            CakesViewModelFactory(cakesRepository)
+        )[CakesViewModel::class.java]
         viewModel.getAllCakes()
         binding.cakesList.layoutManager = LinearLayoutManager(this)
         binding.cakesList.adapter = cakesAdapter

@@ -1,7 +1,9 @@
 package com.redskill.icakes
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -9,7 +11,7 @@ import com.redskill.icakes.databinding.ItemCakeBinding
 import com.redskill.icakes.model.Cake
 import com.squareup.picasso.Picasso
 
-class CakesAdapter : ListAdapter<Cake, CakesAdapter.ViewHolder>(DiffUtils()) {
+class CakesAdapter() : ListAdapter<Cake, CakesAdapter.ViewHolder>(DiffUtils()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -22,14 +24,29 @@ class CakesAdapter : ListAdapter<Cake, CakesAdapter.ViewHolder>(DiffUtils()) {
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        val context = holder.itemView.context
+        holder.bind(getItem(position), context)
     }
 
     class ViewHolder(private val itemCakeBinding: ItemCakeBinding) :
         RecyclerView.ViewHolder(itemCakeBinding.root) {
-        fun bind(cake: Cake) {
+        fun bind(cake: Cake, context : Context) {
             itemCakeBinding.cakeTitle.text = cake.title
+            itemCakeBinding.root.setOnClickListener {
+                createDialog(context, cake)
+            }
             Picasso.get().load(cake.image).into(itemCakeBinding.cakeImage)
+        }
+
+        private fun createDialog(context: Context, cake : Cake) {
+            val builder = AlertDialog.Builder(context)
+            builder.apply {
+                setTitle(cake.title)
+                setMessage(cake.desc)
+                setNegativeButton("Cancel") { dialogInterface, _ -> dialogInterface.dismiss() } //TODO Move this to string setting
+                setPositiveButton("OK") { dialogInterface, _ -> dialogInterface.dismiss() } //TODO Move this to string setting
+                show()
+            }
         }
     }
 }
