@@ -1,5 +1,6 @@
 package com.redskill.icakes
 
+import com.redskill.icakes.model.Cake
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -11,7 +12,20 @@ import org.junit.Assert.*
  */
 class ExampleUnitTest {
     @Test
-    fun addition_isCorrect() {
-        assertEquals(4, 2 + 2)
+    fun list_is_sorted_without_duplicates() {
+        val cakeList = listOf(
+            Cake("Lemon", "", ""),
+            Cake("Orange", "", ""),
+            Cake("Chocolate", "", ""),
+            Cake("Lemon", "", "")
+        )
+        val sortedListNoDuplicate = cakeList.distinct().sortedBy { it.desc }
+        assertEquals(
+            listOf(
+                Cake("Chocolate", "", ""),
+                Cake("Lemon", "", ""),
+                Cake("Orange", "", ""),
+            ), sortedListNoDuplicate
+        )
     }
 }
