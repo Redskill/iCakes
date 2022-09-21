@@ -14,6 +14,7 @@ import kotlinx.coroutines.withContext
 class CakesViewModel constructor(private val cakesRepository: CakesRepository) : ViewModel() {
 
     val cakesList = MutableLiveData<List<Cake>>()
+    var listIsLoaded = false
 
     fun getAllCakes() {
         viewModelScope.launch {
@@ -22,6 +23,7 @@ class CakesViewModel constructor(private val cakesRepository: CakesRepository) :
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
                         cakesList.postValue(response.body() as List<Cake>)
+                        listIsLoaded = true
                     } else {
                         viewModelScope.cancel()
                         Log.e("CAKES", "Failed to load cakes list")

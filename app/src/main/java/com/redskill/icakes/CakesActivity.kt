@@ -32,6 +32,11 @@ class CakesActivity : AppCompatActivity() {
         )[CakesViewModel::class.java]
 
         viewModel?.getAllCakes()
+        // Display a generic message if the list is not loaded
+        if (viewModel?.listIsLoaded == false) {
+            Toast.makeText(this, getString(R.string.error), Toast.LENGTH_SHORT).show()
+        }
+        
         binding.cakesList.apply {
             layoutManager = LinearLayoutManager(this@CakesActivity)
             adapter = cakesAdapter
@@ -39,7 +44,6 @@ class CakesActivity : AppCompatActivity() {
 
         viewModel?.cakesList?.observe(this) {
             if (it.isEmpty()) {
-                Toast.makeText(this, getString(R.string.error), Toast.LENGTH_SHORT).show()
                 createNetworkAlertDialog()
             } else {
                 cakesAdapter.submitList(it.distinct().sortedBy { it.title })

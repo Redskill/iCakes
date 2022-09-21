@@ -1,5 +1,6 @@
 package com.redskill.icakes
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -30,6 +31,12 @@ class CakesAdapter : ListAdapter<Cake, CakesAdapter.ViewHolder>(DiffUtils()) {
 
     class ViewHolder(private val itemCakeBinding: ItemCakeBinding) :
         RecyclerView.ViewHolder(itemCakeBinding.root) {
+
+        init {
+            val fadeAnim = ObjectAnimator.ofFloat(itemCakeBinding.root,"alpha",0f,1f).apply { duration = 2500 }
+            fadeAnim.start()
+            //TODO Perhaps use an AnimatorSet instead to prevent the "laggy" effect of the list being empty and reappearing at startup
+        }
 
         fun bind(cake: Cake, context: Context) {
             itemCakeBinding.cakeTitle.text = cake.title
