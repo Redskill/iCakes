@@ -36,7 +36,7 @@ class CakesActivity : AppCompatActivity() {
         if (viewModel?.listIsLoaded == false) {
             Toast.makeText(this, getString(R.string.error), Toast.LENGTH_SHORT).show()
         }
-        
+
         binding.cakesList.apply {
             layoutManager = LinearLayoutManager(this@CakesActivity)
             adapter = cakesAdapter
@@ -77,6 +77,9 @@ class CakesActivity : AppCompatActivity() {
             Toast.makeText(this, R.string.Refreshing___, Toast.LENGTH_SHORT).show()
             try {
                 viewModel?.getAllCakes()
+                viewModel?.cakesList?.observe(this) {
+                    cakesAdapter.submitList(it.distinct().sortedBy { it.title })
+                }
             } catch (e: Exception) {
                 Toast.makeText(this, R.string.Download_failed, Toast.LENGTH_SHORT).show()
                 createNetworkAlertDialog()
