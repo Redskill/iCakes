@@ -14,7 +14,7 @@ import kotlinx.coroutines.withContext
 class CakesViewModel constructor(private val cakesRepository: CakesRepository) : ViewModel() {
 
     val cakesList = MutableLiveData<List<Cake>>()
-    var listIsLoaded = false
+    var listIsLoaded = true // TODO not really happy about this, with more time I would follow this https://proandroiddev.com/retrofit-calladapter-for-either-type-2145781e1c20
 
     fun getAllCakes() {
         viewModelScope.launch {
@@ -23,7 +23,7 @@ class CakesViewModel constructor(private val cakesRepository: CakesRepository) :
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
                         cakesList.postValue(response.body() as List<Cake>)
-                        listIsLoaded = true
+                        listIsLoaded = true //TODO Ideally errors should be handled by an interceptor in retrofit instance and not via a boolean flag
                     } else {
                         viewModelScope.cancel()
                         Log.e("CAKES", "Failed to load cakes list")
